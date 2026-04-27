@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import CodeViewer from "./components/code-viewer";
 
 type SolidityFile = {
   name: string;
@@ -129,9 +130,7 @@ export default async function Home() {
                   </div>
                 </summary>
                 <div className="border-t border-white/10 px-6 py-5">
-                  <pre className="overflow-x-auto rounded-2xl border border-white/10 bg-[#09090b] p-5 text-sm leading-6 text-zinc-200">
-                    <code>{file.code}</code>
-                  </pre>
+                  <CodeViewer code={file.code} />
                 </div>
               </details>
             ))
