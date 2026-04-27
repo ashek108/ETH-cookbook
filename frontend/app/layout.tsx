@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Solidity Explorer",
+  title: "ETH CookBook",
   description: "Browse Solidity source files from the smart-contracts folder.",
 };
 
