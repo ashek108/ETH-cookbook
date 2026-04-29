@@ -121,8 +121,8 @@ export default async function Home() {
                     <div className="text-lg font-semibold text-white">
                       {file.name}
                     </div>
-                    <div className="mt-1 text-sm text-zinc-400">
-                      {file.relativePath}
+                    <div className="mt-1 text-sm italic text-zinc-400">
+                      {file.name.replace(/\.sol$/, "")}
                     </div>
                   </div>
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/30 text-zinc-300 transition group-open:rotate-45 group-open:border-amber-300/40 group-open:text-amber-200">
