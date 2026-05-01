@@ -14,7 +14,7 @@ async function loadSolidityFiles(): Promise<SolidityFile[]> {
   async function walkDirectory(
     directory: string,
     baseDirectory: string,
-  ): Promise<SolidityFile[]> {
+  ): Promise<(SolidityFile & { mtime: number })[]> {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const nestedFiles = await Promise.all(
       entries.map(async (entry) => {
@@ -29,6 +29,7 @@ async function loadSolidityFiles(): Promise<SolidityFile[]> {
         }
 
         const code = await fs.readFile(absolutePath, "utf8");
+        const stats = await fs.stat(absolutePath);
 
         return [
           {
@@ -37,6 +38,7 @@ async function loadSolidityFiles(): Promise<SolidityFile[]> {
               .relative(baseDirectory, absolutePath)
               .replaceAll(path.sep, "/"),
             code,
+            mtime: stats.mtimeMs,
           },
         ];
       }),
@@ -47,8 +49,8 @@ async function loadSolidityFiles(): Promise<SolidityFile[]> {
 
   try {
     return (await walkDirectory(contractsRoot, contractsRoot)).sort(
-      (left, right) => left.relativePath.localeCompare(right.relativePath),
-    );
+      (left, right) => left.mtime - right.mtime,
+    ) as SolidityFile[];
   } catch {
     return [];
   }
@@ -100,7 +102,6 @@ export default async function Home() {
                 {solidityFiles.length} contract
                 {solidityFiles.length === 1 ? "" : "s"} found
               </div>
-              <div className="mt-1 text-zinc-400">Source: smart-contracts</div>
             </div>
           </div>
         </section>
