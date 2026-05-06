@@ -99,8 +99,8 @@ export default async function Home() {
             </div>
             <div className="rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-300">
               <div className="font-medium text-white">
-                {solidityFiles.length} contract
-                {solidityFiles.length === 1 ? "" : "s"} found
+                {solidityFiles.length + 1} contract
+                {solidityFiles.length + 1 === 1 ? "" : "s"} found
               </div>
             </div>
           </div>
@@ -112,29 +112,51 @@ export default async function Home() {
               No Solidity files were found in smart-contracts.
             </div>
           ) : (
-            solidityFiles.map((file) => (
-              <details
-                key={file.relativePath}
-                className="group rounded-3xl border border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur-sm transition hover:border-amber-300/30 hover:bg-white/10"
+            <>
+              {solidityFiles.map((file) => (
+                <details
+                  key={file.relativePath}
+                  className="group rounded-3xl border border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur-sm transition hover:border-amber-300/30 hover:bg-white/10"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left outline-none">
+                    <div>
+                      <div className="text-lg font-semibold text-white">
+                        {file.name}
+                      </div>
+                      <div className="mt-1 text-sm italic text-zinc-400">
+                        {file.name.replace(/\.sol$/, "")}
+                      </div>
+                    </div>
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/30 text-zinc-300 transition group-open:rotate-45 group-open:border-amber-300/40 group-open:text-amber-200">
+                      +
+                    </div>
+                  </summary>
+                  <div className="border-t border-white/10 px-6 py-5">
+                    <CodeViewer code={file.code} />
+                  </div>
+                </details>
+              ))}
+              <a
+                href="https://github.com/ashek108/foundry-nft"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-3xl border border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur-sm transition hover:border-amber-300/30 hover:bg-white/10"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-left outline-none">
+                <div className="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left outline-none">
                   <div>
                     <div className="text-lg font-semibold text-white">
-                      {file.name}
+                      foundry-nft.sol
                     </div>
                     <div className="mt-1 text-sm italic text-zinc-400">
-                      {file.name.replace(/\.sol$/, "")}
+                      foundry-nft
                     </div>
                   </div>
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/30 text-zinc-300 transition group-open:rotate-45 group-open:border-amber-300/40 group-open:text-amber-200">
-                    +
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/30 text-zinc-300 transition">
+                    ↗
                   </div>
-                </summary>
-                <div className="border-t border-white/10 px-6 py-5">
-                  <CodeViewer code={file.code} />
                 </div>
-              </details>
-            ))
+              </a>
+            </>
           )}
         </section>
       </main>
